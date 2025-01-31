@@ -33,6 +33,7 @@ export default function RootLayout() {
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(session)" options={{ headerShown: false }} />
         <Stack.Screen name="(session)/home" options={{ headerShown: false }} />
+        <Stack.Screen name="(session)/chatSession" options={{ headerShown: false }} />
         <Stack.Screen name="(session)/addFriend" options={{ headerShown: false }} />
         <Stack.Screen name="(session)/myFriends" options={{ headerShown: false }} />
       </Stack>

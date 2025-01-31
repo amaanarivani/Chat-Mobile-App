@@ -6,6 +6,10 @@ import { usePathname, useRouter } from 'expo-router';
 import ChatCard from '@/components/ChatCard';
 
 const home = () => {
+
+    const pathname = usePathname();
+    const router = useRouter();
+
     const chatData: any = [
         {
             _id: 1,
@@ -53,13 +57,16 @@ const home = () => {
         },
     ]
 
-    const pathname = usePathname();
-    const router = useRouter();
+    const handlePress = (item: any) => {
+        console.log('Session Id', item?.chatbot_id?._id);
+        router.navigate({ pathname: "/(session)/chatSession", params: { item: item?.name } })
+        // Perform your action here (e.g., navigation, state update)
+    };
 
     const renderItem = ({ item }: { item: any }) => (
-        // <TouchableOpacity onPress={() => handlePress(item)}>
-        <ChatCard data={item} />
-        // </TouchableOpacity>
+        <TouchableOpacity onPress={() => handlePress(item)}>
+            <ChatCard data={item} />
+        </TouchableOpacity>
     );
 
     return (
