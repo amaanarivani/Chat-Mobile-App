@@ -5,8 +5,8 @@ import { FontAwesome, FontAwesome5, FontAwesome6 } from '@expo/vector-icons';
 const UserAccount = () => {
     return (
         <>
-            {/* <FontAwesome5 name="user-alt" size={25} color="#6969D7" /> */}
-            <FontAwesome6 name="user-large" size={25} color="#6969D7" />
+            {/* <FontAwesome5 name="user-alt" size={25} color="#279EFF" /> */}
+            <FontAwesome6 name="user-large" size={25} color="#00000" />
         </>
     )
 }

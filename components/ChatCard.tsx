@@ -56,7 +56,7 @@ const ChatCard = ({ data }: { data: any }) => {
                 <View style={{ marginVertical: "auto" }}>
                     {
                         data?.nsMessage ? <>
-                            <View style={{ backgroundColor: "#6969D7", width: 25, borderRadius: 100, paddingVertical: 5, marginHorizontal: "auto" }}>
+                            <View style={{ backgroundColor: "#279EFF", width: 25, borderRadius: 100, paddingVertical: 5, marginHorizontal: "auto" }}>
                                 <Text style={{ color: "white", marginVertical: "auto", fontSize: 15, textAlign: "center" }}>{data?.nsMessage}</Text>
                             </View>
                         </> : <>

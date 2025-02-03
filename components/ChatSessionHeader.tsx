@@ -8,7 +8,7 @@ const ChatSessionHeader = ({ title }: { title: any }) => {
 
     const router = useRouter();
     return (
-        <View style={{ backgroundColor: "#6969D7", height: 90, borderBottomLeftRadius: 50, borderBottomRightRadius: 50 }}>
+        <View style={{ backgroundColor: "#279EFF", height: 90, borderBottomLeftRadius: 50, borderBottomRightRadius: 50 }}>
             <View style={{ padding: 15, flexDirection: "row", justifyContent: "space-between" }}>
                 <Pressable onPress={() => router.back()}>
                     <Ionicons name="arrow-back-sharp" size={26} color="white" />
