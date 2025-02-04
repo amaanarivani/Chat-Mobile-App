@@ -36,7 +36,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
             if (user) {
                 const parsedUser = JSON.parse(user);
-                setCurrentUser(parsedUser.data);
+                setCurrentUser(parsedUser.result);
                 setLoggedIn(true);
                 // console.log(parsedUser, "current user in context");
             } else {
@@ -57,7 +57,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
             setLoggedIn(false);
             console.log('inside logout');
             setCurrentUser(null);
-            // router.push('/Screens/signin');
+            router.push('/(no-session)/signin');
         } catch (error) {
             console.error("Failed to remove user data from AsyncStorage:", error);
         }

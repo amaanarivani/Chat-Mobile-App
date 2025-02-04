@@ -1,18 +1,28 @@
 import { Image, Platform, Pressable, StyleSheet, Text, View } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import { AntDesign, FontAwesome6 } from '@expo/vector-icons';
-// import { DateTime } from 'luxon';
+import { DateTime } from 'luxon';
 // import { instance } from '@/api/baseUrlConfig';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-// import CountryFlag from "react-native-country-flag";
+import { instance } from '@/api/baseUrlConfig';
+import UseAppContext from '@/contextApi/UseContext';
+import { useFocusEffect } from 'expo-router';
 
 const ChatCard = ({ data }: { data: any }) => {
+    const [receiverUserData, setReceiverUserData] = useState({ _id: '', name: '', email: '' })
+    const { setLoggedIn, setCurrentUser, currentUser, setLoadingData } = UseAppContext();
+
+    let receiver_id = data.users.filter((userId: any) => userId !== currentUser?._id)[0] || "";
+    // console.log(receiver_id, "receiver user id");
+
+
     // const [nsMessage, setNsMessage] = useState(2);
 
-    // useEffect(() => {
-
-    //     getNotSeenCount();
-    // }, [data?._id])
+    // useFocusEffect(useCallback(() => {
+    //     if (receiver_id) {
+    //         getReceiverUserData();
+    //     }
+    // }, [receiver_id]))
 
     // const getNotSeenCount = async () => {
 
@@ -28,44 +38,48 @@ const ChatCard = ({ data }: { data: any }) => {
     //     }
     // }
 
+    // const getReceiverUserData = async () => {
+    //     try {
+    //         const res = await instance.post(`/api/get-custom-single-user`, {
+    //             user_id: receiver_id
+    //         })
+    //         setReceiverUserData(res?.data?.result)
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+
     return (
-        <View style={{ backgroundColor: "white", padding: 10, width: "99%", borderBottomWidth: 1, borderBottomColor: "#D9D9D9" }}>
+        <View style={{ backgroundColor: "white", padding: 15, width: "99%", borderBottomWidth: 1, borderBottomColor: "#D9D9D9" }}>
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <View style={{ flexDirection: "row" }}>
-                    <View style={{ marginEnd: 5, marginVertical: "auto" }}>
-                        {/* <FontAwesome6 name="user-large" size={Platform.OS == "android" ? 25 : 30} color="#B4B4B8" /> */}
+                    <View style={{ marginEnd: 10, marginVertical: "auto" }}>
                         <Image
                             source={require('@/assets/images/avatar.png')}
                             style={{ width: 40, height: 40 }}
                         />
                     </View>
                     <View style={{ marginStart: 2, marginVertical: "auto" }}>
-                        <Text style={{ fontSize: Platform.OS == "android" ? 15 : 17, fontWeight: data?.nsMessage ? "800" : "500" }}>{data?.name}</Text>
+                        <Text style={{ fontSize: Platform.OS == "android" ? 15 : 17, fontWeight: data?.nsMessage ? "800" : "500" }}>{data?.receiver?.name}</Text>
                         <View style={{ flexDirection: "row", marginTop: 5 }}>
-                            {
-                                data?.lastMessage ? <>
-                                    <View>
-                                        <Text style={{ color: "gray", marginVertical: "auto", marginEnd: 5, fontSize: 15 }}>{data?.lastMessage}</Text>
-                                    </View>
-                                </> : <>
-                                </>
-                            }
+                            <View>
+                                <Text style={{ color: "gray", marginVertical: "auto", marginEnd: 5, fontSize: 15 }}>{data?.lastMessage?.message}</Text>
+                            </View>
                         </View>
                     </View>
                 </View>
                 <View style={{ marginVertical: "auto" }}>
-                    {
-                        data?.nsMessage ? <>
-                            <View style={{ backgroundColor: "#279EFF", width: 25, borderRadius: 100, paddingVertical: 5, marginHorizontal: "auto" }}>
-                                <Text style={{ color: "white", marginVertical: "auto", fontSize: 15, textAlign: "center" }}>{data?.nsMessage}</Text>
-                            </View>
-                        </> : <>
+                    {/* {
+                        data?.nsMessage ? <> */}
+                    <View style={{ backgroundColor: "#279EFF", width: Platform.OS == "android" ? 32 : 28, borderRadius: "100%", paddingVertical: 6, marginHorizontal: "auto" }}>
+                        <Text style={{ color: "white", marginVertical: "auto", fontSize: 15, textAlign: "center" }}>4</Text>
+                    </View>
+                    {/* </> : <>
                         </>
-                    }
+                    } */}
                     <View style={{ marginTop: 10 }}>
                         <Text style={{ fontSize: 15, textAlign: "center" }}>
-                            2 hours ago
-                            {/* {DateTime.fromISO(data?.updated_at).toRelative()} */}
+                            {DateTime.fromISO(data?.updated_at).toRelative()}
                         </Text>
                     </View>
                 </View>
