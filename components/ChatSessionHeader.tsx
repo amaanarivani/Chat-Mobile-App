@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -8,7 +8,7 @@ const ChatSessionHeader = ({ title }: { title: any }) => {
 
     const router = useRouter();
     return (
-        <View style={{ backgroundColor: "#279EFF", height: 90, borderBottomLeftRadius: 50, borderBottomRightRadius: 50 }}>
+        <View style={{ backgroundColor: "#279EFF", height: Platform.OS == "android" ? 110 : 90, borderBottomLeftRadius: 50, borderBottomRightRadius: 50, paddingTop: Platform.OS == "android" ? 30 : 0 }}>    
             <View style={{ padding: 15, flexDirection: "row", justifyContent: "space-between" }}>
                 <Pressable onPress={() => router.back()}>
                     <Ionicons name="arrow-back-sharp" size={26} color="white" />
@@ -16,10 +16,10 @@ const ChatSessionHeader = ({ title }: { title: any }) => {
 
                 <View>
                     <View style={{  }}>
-                        <Text style={{ color: "white", fontSize: 24, marginStart: 5, marginVertical: "auto", fontWeight: "600", textAlign: "center" }}>{title}</Text>
+                        <Text style={{ color: "white", fontSize: 20, marginStart: 5, marginVertical: "auto", fontWeight: "600", textAlign: "center" }}>{title}</Text>
                         <View style={{flexDirection: "row", marginHorizontal: "auto"}}>
-                            <Text style={{ color: "#90EE90", marginTop: 8, marginEnd: 5, fontSize: 10 }}>&#9679;</Text>
-                            <Text style={{ color: "white", fontSize: 15, textAlign: "center", marginTop: 5 }}>Online</Text>
+                            <Text style={{ color: "#90EE90", marginEnd: 5, fontSize: 10, marginTop: 6 }}>&#9679;</Text>
+                            <Text style={{ color: "white", fontSize: 13, textAlign: "center", marginTop: 5 }}>Online</Text>
                         </View>
                     </View>
                 </View>

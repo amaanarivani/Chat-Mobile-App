@@ -7,6 +7,8 @@ import { useEffect } from 'react';
 import 'react-native-reanimated';
 
 import { useColorScheme } from '@/hooks/useColorScheme';
+import { PaperProvider } from 'react-native-paper';
+import { AppProvider } from '@/contextApi/UseContext';
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
 SplashScreen.preventAutoHideAsync();
@@ -28,16 +30,21 @@ export default function RootLayout() {
   }
 
   return (
-    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(session)" options={{ headerShown: false }} />
-        <Stack.Screen name="(session)/home" options={{ headerShown: false }} />
-        <Stack.Screen name="(session)/chatSession" options={{ headerShown: false }} />
-        <Stack.Screen name="(session)/addFriend" options={{ headerShown: false }} />
-        <Stack.Screen name="(session)/myFriends" options={{ headerShown: false }} />
-      </Stack>
-      <StatusBar style="auto" />
-    </ThemeProvider>
+    <PaperProvider>
+      <AppProvider>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(session)" options={{ headerShown: false }} />
+          <Stack.Screen name="(no-session)" options={{ headerShown: false }} />
+          <Stack.Screen name="(no-session)/signin" options={{ headerShown: false }} />
+          <Stack.Screen name="(session)/home" options={{ headerShown: false }} />
+          <Stack.Screen name="(session)/chatSession" options={{ headerShown: false }} />
+          <Stack.Screen name="(session)/addFriend" options={{ headerShown: false }} />
+          <Stack.Screen name="(session)/myFriends" options={{ headerShown: false }} />
+          <Stack.Screen name="(session)/userAccount" options={{ headerShown: false }} />
+        </Stack>
+        <StatusBar style="auto" />
+      </AppProvider>
+    </PaperProvider>
   );
 }

@@ -1,4 +1,4 @@
-import { Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
 import { Feather, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
@@ -8,7 +8,7 @@ const Header = ({ title }: { title: any }) => {
 
   const router = useRouter();
   return (
-    <View style={{ backgroundColor: "#279EFF", height: 130, borderBottomLeftRadius: 50, borderBottomRightRadius: 50 }}>
+    <View style={{ backgroundColor: "#279EFF", height: Platform.OS == "android" ? 110 : 80, borderBottomLeftRadius: 50, borderBottomRightRadius: 50, paddingTop: Platform.OS == "android" ? 30 : 0 }}> 
       <View style={{ padding: 15, flexDirection: "row", justifyContent: "space-between" }}>
         {
           title == "Chats" ? <>
@@ -26,17 +26,17 @@ const Header = ({ title }: { title: any }) => {
           </View>
         </View>
         <Pressable style={{ backgroundColor: "white", padding: 5, borderRadius: "100%", marginVertical: "auto" }}
-        // onPress={() => router.navigate("/(session)/userAccount")}
+          onPress={() => router.navigate("/(session)/userAccount")}
         >
           <UserAccount />
         </Pressable>
       </View>
-      <View>
+      {/* <View>
         <TextInput
           style={styles.input}
           placeholder='Search'
         />
-      </View>
+      </View> */}
     </View>
   )
 }
