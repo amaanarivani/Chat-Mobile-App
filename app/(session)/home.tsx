@@ -36,19 +36,7 @@ const home = () => {
     }
 
     const handlePress = async (item: any) => {
-        let receiver_id = item.users.filter((userId: any) => userId !== currentUser?._id)[0] || "";
-        console.log('receiver Id', receiver_id);
-        let receiver_name;
-        try {
-            const res = await instance.post(`/api/get-custom-single-user`, {
-                user_id: receiver_id
-            })
-            receiver_name = res?.data?.result?.name;
-        } catch (error) {
-            console.log(error);
-        }
-        router.navigate({ pathname: "/(session)/chatSession", params: { receiver_id: receiver_id, receiver_name: receiver_name } })
-        // Perform your action here (e.g., navigation, state update)
+        router.navigate({ pathname: "/(session)/chatSession", params: { receiver_id: item?.receiver?._id, receiver_name: item?.receiver?.name } })
     };
 
     const renderItem = ({ item }: { item: any }) => (

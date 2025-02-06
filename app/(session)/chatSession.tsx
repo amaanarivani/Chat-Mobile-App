@@ -24,10 +24,8 @@ const chatSession = () => {
     console.log(receiver_name, "receiver_name");
 
     useFocusEffect(useCallback(() => {
-        if (currentUser?._id && receiver_id) {
-            getAllChatMessages();
-        }
-    }, [currentUser?._id, receiver_id]))
+        getAllChatMessages();
+    }, []))
 
     const getAllChatMessages = async () => {
         try {

@@ -13,41 +13,6 @@ const ChatCard = ({ data }: { data: any }) => {
     const { setLoggedIn, setCurrentUser, currentUser, setLoadingData } = UseAppContext();
 
     let receiver_id = data.users.filter((userId: any) => userId !== currentUser?._id)[0] || "";
-    // console.log(receiver_id, "receiver user id");
-
-
-    // const [nsMessage, setNsMessage] = useState(2);
-
-    // useFocusEffect(useCallback(() => {
-    //     if (receiver_id) {
-    //         getReceiverUserData();
-    //     }
-    // }, [receiver_id]))
-
-    // const getNotSeenCount = async () => {
-
-    //     try {
-    //         let authToken = await AsyncStorage.getItem('token');
-    //         const res = await instance.post('/api/chat-message-nscount', {
-    //             session_id: data?._id
-    //         }, { headers: { Authorization: `Bearer ${authToken}` } })
-    //         setNsMessage(res?.data?.nsCount)
-
-    //     } catch (error: any) {
-    //         console.log(error);
-    //     }
-    // }
-
-    // const getReceiverUserData = async () => {
-    //     try {
-    //         const res = await instance.post(`/api/get-custom-single-user`, {
-    //             user_id: receiver_id
-    //         })
-    //         setReceiverUserData(res?.data?.result)
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
 
     return (
         <View style={{ backgroundColor: "white", padding: 15, width: "99%", borderBottomWidth: 1, borderBottomColor: "#D9D9D9" }}>
@@ -60,23 +25,23 @@ const ChatCard = ({ data }: { data: any }) => {
                         />
                     </View>
                     <View style={{ marginStart: 2, marginVertical: "auto" }}>
-                        <Text style={{ fontSize: Platform.OS == "android" ? 15 : 17, fontWeight: data?.nsMessage ? "800" : "500" }}>{data?.receiver?.name}</Text>
+                        <Text style={{ fontSize: Platform.OS == "android" ? 15 : 17, fontWeight: data?.notSeenCount ? "800" : "500" }}>{data?.receiver?.name}</Text>
                         <View style={{ flexDirection: "row", marginTop: 5 }}>
                             <View>
-                                <Text style={{ color: "gray", marginVertical: "auto", marginEnd: 5, fontSize: 15 }}>{data?.lastMessage?.message}</Text>
+                                <Text style={{ color: "gray", marginVertical: "auto", marginEnd: 5, fontSize: 15, fontWeight: data?.notSeenCount ? "700" : "500" }}>{data?.lastMessage?.message}</Text>
                             </View>
                         </View>
                     </View>
                 </View>
                 <View style={{ marginVertical: "auto" }}>
-                    {/* {
-                        data?.nsMessage ? <> */}
-                    <View style={{ backgroundColor: "#279EFF", width: Platform.OS == "android" ? 32 : 28, borderRadius: "100%", paddingVertical: 6, marginHorizontal: "auto" }}>
-                        <Text style={{ color: "white", marginVertical: "auto", fontSize: 15, textAlign: "center" }}>4</Text>
-                    </View>
-                    {/* </> : <>
+                    {
+                        data?.notSeenCount ? <>
+                            <View style={{ backgroundColor: "#279EFF", width: Platform.OS == "android" ? 32 : 28, borderRadius: "100%", paddingVertical: 6, marginHorizontal: "auto" }}>
+                                <Text style={{ color: "white", marginVertical: "auto", fontSize: 15, textAlign: "center" }}>{data?.notSeenCount}</Text>
+                            </View>
+                        </> : <>
                         </>
-                    } */}
+                    }
                     <View style={{ marginTop: 10 }}>
                         <Text style={{ fontSize: 15, textAlign: "center" }}>
                             {DateTime.fromISO(data?.updated_at).toRelative()}
