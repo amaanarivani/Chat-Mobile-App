@@ -14,19 +14,19 @@ const ChatSessionHeader = ({ title }: { title: any }) => {
                     <Pressable style={{ marginStart: 10 }} onPress={() => router.back()}>
                         <Ionicons name="arrow-back-sharp" size={26} color="white" />
                     </Pressable>
+                </View>
 
-                    <View style={{ marginStart: "43%" }}>
-                        <View style={{ flexDirection: "row" }}>
-                            <Image
-                                source={require("@/assets/images/avatar.png")}
-                                style={{ width: 30, height: 30, borderRadius: 100, marginVertical: "auto" }}
-                            />
-                            <Text style={{ color: "white", fontSize: 20, marginStart: 5, marginVertical: "auto", fontWeight: "600", textAlign: "center" }}>{title}</Text>
-                        </View>
-                        <View style={{ flexDirection: "row", marginHorizontal: "auto" }}>
-                            <Text style={{ color: "#90EE90", marginEnd: 5, fontSize: 10, marginTop: 6 }}>&#9679;</Text>
-                            <Text style={{ color: "white", fontSize: 13, textAlign: "center", marginTop: 5 }}>Online</Text>
-                        </View>
+                <View style={{  }}>
+                    <View style={{ flexDirection: "row" }}>
+                        <Image
+                            source={require("@/assets/images/avatar.png")}
+                            style={{ width: 30, height: 30, borderRadius: 100, marginVertical: "auto" }}
+                        />
+                        <Text style={{ color: "white", fontSize: 20, marginStart: 5, marginVertical: "auto", fontWeight: "600", textAlign: "center" }}>{title}</Text>
+                    </View>
+                    <View style={{ flexDirection: "row", marginHorizontal: "auto" }}>
+                        <Text style={{ color: "#90EE90", marginEnd: 5, fontSize: 10, marginTop: 6 }}>&#9679;</Text>
+                        <Text style={{ color: "white", fontSize: 13, textAlign: "center", marginTop: 5 }}>Online</Text>
                     </View>
                 </View>
                 <View style={{ flexDirection: "row" }}>
