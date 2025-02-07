@@ -3,20 +3,10 @@ import React from 'react'
 import { instance } from '@/api/baseUrlConfig'
 import UseAppContext from '@/contextApi/UseContext';
 
-const UserSuggestionCard = ({ data }: { data: any }) => {
+const FriendsCard = ({ data }: { data: any }) => {
     const { setLoggedIn, setCurrentUser, currentUser, setLoadingData } = UseAppContext();
+    console.log(data, "data");
 
-    const handleAddFriends = async () => {
-        try {
-            const res = await instance.post(`/api/add-friends`, {
-                user_id: currentUser?._id,
-                friend_id: data._id
-            })
-            console.log(res?.data?.message);
-        } catch (error) {
-            console.log(error);
-        }
-    }
 
     return (
         <View style={{ backgroundColor: "white", padding: 15, width: "93%", borderBottomWidth: 1, borderBottomColor: "#D9D9D9", marginBottom: 10, borderRadius: 10, marginHorizontal: "auto" }}>
@@ -29,8 +19,10 @@ const UserSuggestionCard = ({ data }: { data: any }) => {
                     </View>
                 </View>
                 <View>
-                    <Pressable style={{ backgroundColor: "#279EFF", padding: 10, borderRadius: 10 }} onPress={handleAddFriends}>
-                        <Text style={{ fontSize: 15, color: "white" }}>Add friend</Text>
+                    <Pressable style={{ backgroundColor: "#279EFF", padding: 10, borderRadius: 10 }}
+                    // onPress={handleAddFriends}
+                    >
+                        <Text style={{ fontSize: 15, color: "white" }}>Message</Text>
                     </Pressable>
                 </View>
             </View>
@@ -38,6 +30,6 @@ const UserSuggestionCard = ({ data }: { data: any }) => {
     )
 }
 
-export default UserSuggestionCard;
+export default FriendsCard;
 
 const styles = StyleSheet.create({})
