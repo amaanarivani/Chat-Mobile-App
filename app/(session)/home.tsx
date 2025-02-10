@@ -11,7 +11,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 const home = () => {
     const [chatData, setChatData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { setLoggedIn, setCurrentUser, currentUser, setLoadingData } = UseAppContext();
+    const { setLoggedIn, setCurrentUser, currentUser, setLoadingData, handleSetSocket, socket } = UseAppContext();
 
     const pathname = usePathname();
     const router = useRouter();
@@ -19,6 +19,13 @@ const home = () => {
     useFocusEffect(useCallback(() => {
         getAllChatSession()
     }, []))
+
+    useFocusEffect(useCallback(() => {
+        if (currentUser?._id && !socket) {
+            handleSetSocket();
+        }
+    }, [currentUser?._id, socket]))
+
 
 
     const getAllChatSession = async () => {
@@ -29,7 +36,7 @@ const home = () => {
             const res = await instance.post(`/api/get-all-chat-session`, {
                 user_id: currentUser?._id
             }, { headers: { Authorization: `Bearer ${authToken}` } });
-            console.log(res?.data?.result, "chat data from server");
+            // console.log(res?.data?.result, "chat data from server");
             setChatData(res?.data?.result)
             setLoading(false);
         } catch (error) {

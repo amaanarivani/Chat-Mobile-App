@@ -1,5 +1,5 @@
 import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import Header from '@/components/Header';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import ChatSessionHeader from '@/components/ChatSessionHeader';
@@ -11,11 +11,11 @@ import UseAppContext from '@/contextApi/UseContext';
 
 const chatSession = () => {
     const [receiverUserData, setReceiverUserData] = useState({ _id: '', name: '', email: '' })
-    const [chatMessages, setChatMessages] = useState({ chat_messages: [] });
+    const [chatMessages, setChatMessages] = useState({ _id: "", chat_messages: [] });
     const [responseMessage, setResponseMessage] = useState("");
     const [showKeyboardAndroid, setShowKeyboardAndroid] = useState(false);
     const [loading, setLoading] = useState(false);
-    const { setLoggedIn, setCurrentUser, currentUser, setLoadingData } = UseAppContext();
+    const { setLoggedIn, setCurrentUser, currentUser, setLoadingData, socket } = UseAppContext();
 
     const { receiver_id } = useLocalSearchParams<{ receiver_id: any }>();
     console.log(receiver_id, "receiver_id");
@@ -25,6 +25,32 @@ const chatSession = () => {
     useFocusEffect(useCallback(() => {
         getAllChatMessages();
     }, []))
+
+    useEffect(() => {
+        try {
+            console.log("emit socket", socket);
+
+            if (socket && chatMessages?._id) {
+                socket.emit("join_chat_room", { chat_id: chatMessages?._id, user_id: currentUser?._id })
+                socket.on("live_message", (data: any) => {
+                    console.log(data, "live_message");
+                    setChatMessages((prev: any) => {
+                        return {
+                            ...prev,
+                            chat_messages: [...prev?.chat_messages, data?.messageDoc]
+                        }
+                    })
+                })
+            }
+        } catch (error) {
+
+        }
+
+        return () => {
+            socket?.off("live_message")
+        }
+    }, [socket, chatMessages?._id])
+
 
     const getAllChatMessages = async () => {
         try {
@@ -42,13 +68,24 @@ const chatSession = () => {
         }
     }
 
-    const handleSendMessages = async (messageToSend: string) => {
+    const sendMessages = async (messageToSend: string) => {
         try {
-            const res = await instance.post(`/api/send-chat-messages`, {
+            const res = await instance.post(`/api/initiate-chat-session`, {
                 initiate_user_id: currentUser?._id,
                 client_user_id: receiver_id,
                 message: messageToSend
             })
+            console.log(res?.data?.result, "initiate chat doc");
+            setChatMessages(res?.data?.result)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    const handleSendMessages = async (messageToSend: string) => {
+        try {
+            sendMessages(messageToSend);
+            socket?.emit("user_message", { chat_id: chatMessages?._id, message: messageToSend, user_id: currentUser?._id })
         } catch (error) {
             console.log(error);
         }

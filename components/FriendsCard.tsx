@@ -4,6 +4,7 @@ import { instance } from '@/api/baseUrlConfig'
 import UseAppContext from '@/contextApi/UseContext';
 import Popup from './Popup';
 import { useRouter } from 'expo-router';
+import { Feather } from '@expo/vector-icons';
 
 const FriendsCard = ({ data, setLoading, loading, setError, setMessage }: { data: any, setLoading: any, loading: any, setError: any, setMessage: any }) => {
     const { setLoggedIn, setCurrentUser, currentUser, setLoadingData } = UseAppContext();
@@ -29,29 +30,48 @@ const FriendsCard = ({ data, setLoading, loading, setError, setMessage }: { data
         }
     }
 
+    const handleOpenChatSession = async () => {
+        router.navigate({ pathname: "/(session)/chatSession", params: { receiver_id: data?._id, receiver_name: data?.name } })
+    }
+
 
     return (
         <>
             <View style={{ backgroundColor: "white", padding: 15, width: "93%", borderBottomWidth: 1, borderBottomColor: "#D9D9D9", marginBottom: 10, borderRadius: 10, marginHorizontal: "auto" }}>
-                <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-                    <View style={{ flexDirection: "row" }}>
-                        <Image source={require("@/assets/images/avatar.png")} style={{ width: 40, height: 40, borderRadius: 30 }} />
+                <View style={{ flexDirection: "row" }}>
+                    <View style={{}}>
+                        <Image source={require("@/assets/images/avatar.png")} style={{ width: 70, height: 70, borderRadius: 100 }} />
+                    </View>
+                    <View style={{ marginStart: 10 }}>
                         <View style={{ marginVertical: "auto" }}>
                             <Text style={{ marginStart: 10, fontSize: 17, fontWeight: "bold" }}>{data.name}</Text>
                             <Text style={{ marginStart: 10, fontSize: 13, marginTop: 5 }}>{data.email}</Text>
                         </View>
-                    </View>
-                    <View>
-                        <Pressable style={{ backgroundColor: "#279EFF", padding: 10, borderRadius: 10 }}
-                            onPress={handleRemoveFriends}
-                        >
-                            <Text style={{ fontSize: 15, color: "white" }}>
-                                {/* {
+
+                        <View style={{ flexDirection: "row", marginTop: 10 }}>
+                            <Pressable style={{ backgroundColor: "#279EFF", padding: 10, borderRadius: 10, flexDirection: "row" }}
+                                onPress={handleOpenChatSession}
+                            >
+                                <Text style={{ fontSize: 15, color: "white" }}>
+                                    {/* {
                                     loading ? "Loading..." : "Remove Friend"
                                 } */}
-                                Remove Friend
-                            </Text>
-                        </Pressable>
+                                    Message
+                                </Text>
+                                {/* <Feather name="send" size={24} color="white" /> */}
+                            </Pressable>
+                            <Pressable style={{ backgroundColor: "#279EFF", padding: 10, borderRadius: 10, marginStart: 20 }}
+                                onPress={handleRemoveFriends}
+                            >
+
+                                <Text style={{ fontSize: 15, color: "white" }}>
+                                    {/* {
+                                    loading ? "Loading..." : "Remove Friend"
+                                } */}
+                                    Remove Friend
+                                </Text>
+                            </Pressable>
+                        </View>
                     </View>
                 </View>
             </View>
