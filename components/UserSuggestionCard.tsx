@@ -2,19 +2,27 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import React from 'react'
 import { instance } from '@/api/baseUrlConfig'
 import UseAppContext from '@/contextApi/UseContext';
+import { useRouter } from 'expo-router';
 
-const UserSuggestionCard = ({ data }: { data: any }) => {
+const UserSuggestionCard = ({ data, setLoading, loading, setError, setMessage }: { data: any, setLoading: any, loading: any, setError: any, setMessage: any }) => {
     const { setLoggedIn, setCurrentUser, currentUser, setLoadingData } = UseAppContext();
+    const router = useRouter();
 
     const handleAddFriends = async () => {
         try {
+            setLoading(true);
             const res = await instance.post(`/api/add-friends`, {
                 user_id: currentUser?._id,
                 friend_id: data._id
             })
-            console.log(res?.data?.message);
+            setMessage(res?.data?.message);
+            setLoading(false);
+            setTimeout(() => {
+                router.navigate("/(session)/myFriends")
+            }, 500);
         } catch (error) {
             console.log(error);
+            setLoading(false);
         }
     }
 
@@ -30,7 +38,12 @@ const UserSuggestionCard = ({ data }: { data: any }) => {
                 </View>
                 <View>
                     <Pressable style={{ backgroundColor: "#279EFF", padding: 10, borderRadius: 10 }} onPress={handleAddFriends}>
-                        <Text style={{ fontSize: 15, color: "white" }}>Add friend</Text>
+                        <Text style={{ fontSize: 15, color: "white" }}>
+                            {/* {
+                                loading ? "Loading..." : "Add Friend"
+                            } */}
+                            Add Friend
+                        </Text>
                     </Pressable>
                 </View>
             </View>

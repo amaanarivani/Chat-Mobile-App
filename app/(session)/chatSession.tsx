@@ -1,4 +1,4 @@
-import { Image, KeyboardAvoidingView, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useCallback, useState } from 'react'
 import Header from '@/components/Header';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
@@ -8,7 +8,6 @@ import UserMessage from '@/components/UserMessage';
 import { Feather, FontAwesome6 } from '@expo/vector-icons';
 import { instance } from '@/api/baseUrlConfig';
 import UseAppContext from '@/contextApi/UseContext';
-import { ActivityIndicator } from 'react-native-paper';
 
 const chatSession = () => {
     const [receiverUserData, setReceiverUserData] = useState({ _id: '', name: '', email: '' })

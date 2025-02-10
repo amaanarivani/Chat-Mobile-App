@@ -68,8 +68,9 @@ const signin = () => {
                     router.push("/(session)/home");
                 }, 1000);
                 AsyncStorage.setItem('user', JSON.stringify(res.data));
+                AsyncStorage.setItem('token', JSON.stringify(res.data?.result?.token));
                 setLoggedIn(true);
-                console.log(res?.data?.result, "before setting current user");
+                // console.log(res?.data, "before setting current user");
                 setCurrentUser(res?.data?.result);
                 // handleSigninNotification(res?.data?.data)
                 setLoadingData(false);
