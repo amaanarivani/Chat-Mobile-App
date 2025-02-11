@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native'
+import { Alert, Image, Pressable, StyleSheet, Text, View } from 'react-native'
 import React, { useState } from 'react'
 import { instance } from '@/api/baseUrlConfig'
 import UseAppContext from '@/contextApi/UseContext';
@@ -11,6 +11,20 @@ const FriendsCard = ({ data, setLoading, loading, setError, setMessage }: { data
     console.log(data, "data");
 
     const router = useRouter();
+
+    const showRemoveFriendDialog = () => {
+        Alert.alert('Are you Sure', `Do you want to remove ${data?.name} as friend ?`, [
+            {
+                text: 'Cancel',
+                onPress: () => console.log('Cancel Pressed'),
+                style: 'cancel',
+            },
+            {
+                text: 'Yes, remove',
+                onPress: () => handleRemoveFriends()
+            },
+        ]);
+    }
 
     const handleRemoveFriends = async () => {
         try {
@@ -61,7 +75,7 @@ const FriendsCard = ({ data, setLoading, loading, setError, setMessage }: { data
                                 {/* <Feather name="send" size={24} color="white" /> */}
                             </Pressable>
                             <Pressable style={{ backgroundColor: "#279EFF", padding: 10, borderRadius: 10, marginStart: 20 }}
-                                onPress={handleRemoveFriends}
+                                onPress={showRemoveFriendDialog}
                             >
 
                                 <Text style={{ fontSize: 15, color: "white" }}>
