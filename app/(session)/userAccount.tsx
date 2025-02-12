@@ -70,11 +70,11 @@ const userAccount = () => {
                     // onPress={() => router.navigate("/(session)/userProfile")}
                     >
                         <View style={{ flexDirection: "row" }}>
-                            <Image
+                            {/* <Image
                                 source={require("@/assets/images/avatar.png")}
                                 style={{ width: 60, height: 60 }}
-                            />
-                            {/* <FontAwesome6 name="user-large" size={50} color="black" /> */}
+                            /> */}
+                            <FontAwesome6 name="user-large" size={50} color="black" />
                             <View style={{ marginStart: 15, marginTop: 5 }}>
                                 <Text style={{ fontSize: 20, fontWeight: "500", marginBottom: 5 }}>{currentUser?.name}</Text>
                                 <Text>{currentUser?.email}</Text>

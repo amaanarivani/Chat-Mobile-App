@@ -23,7 +23,9 @@ function Index(props: any) {
             const user: any = JSON.parse(userLogin);
             console.log(user?.result?.name, "check user");
             if (user?.result) {
+                setTimeout(() => {
                 router.push('/(session)/home');
+                }, 1000);
             }
             else {
                 router.push('/(no-session)/signin')

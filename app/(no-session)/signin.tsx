@@ -112,7 +112,7 @@ const signin = () => {
 
     return (
         <>
-            <SafeAreaView style={{ height: "100%", backgroundColor: "white" }}>
+            <SafeAreaView style={{ height: "100%", backgroundColor: "#279EFF" }}>
                 <View style={{ backgroundColor: "#279EFF", height: Platform.OS == "android" ? 110 : 80, borderBottomLeftRadius: 50, borderBottomRightRadius: 50, paddingTop: Platform.OS == "android" ? 30 : 0 }}>
                     <View style={{ flexDirection: "row", justifyContent: "space-between", width: "95%", marginHorizontal: "auto", marginTop: 20 }}>
                         <View>
@@ -123,7 +123,7 @@ const signin = () => {
                             </Pressable>
                         </View>
                         <View style={{ flexDirection: "row" }}>
-                            <Text style={{ fontSize: 16, marginVertical: "auto", color: "white" }}>Don't have an account yet?</Text>
+                            <Text style={{ fontSize: 16, marginVertical: "auto", color: "white", fontWeight: 600 }}>Don't have an account yet?</Text>
                             <Pressable style={{ backgroundColor: "white", paddingVertical: 10, paddingHorizontal: 20, borderRadius: 25, marginStart: 5 }}
                             // onPress={() => router.push("/(no-session)/signup")}
                             >
@@ -132,11 +132,12 @@ const signin = () => {
                         </View>
                     </View>
                 </View>
-                <View style={{ marginTop: "10%" }}>
-                    <Text style={{ fontSize: 40, fontWeight: "800", color: "black", textAlign: "center" }}>Chat App</Text>
+                <View style={{ marginTop: "10%", flexDirection: 'row', justifyContent: 'center' }}>
+                    <Ionicons name="chatbubbles-outline" size={60} color="white" />
+                    <Text style={{ fontSize: 60, fontWeight: "800", color: "white", marginStart: 5}}>Convo</Text>
                 </View>
                 {/* <View style={{ width: "90%", backgroundColor: "#D1D1F0", padding: 6, marginHorizontal: "auto", marginTop: 30, borderTopLeftRadius: 20, borderTopRightRadius: 20 }}></View> */}
-                <ScrollView style={{ flex: 1, backgroundColor: "#F1F1F1", padding: 20, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: 30, height: "100%" }} automaticallyAdjustKeyboardInsets keyboardShouldPersistTaps={'handled'}>
+                <ScrollView style={{ flex: 1, backgroundColor: "white", padding: 20, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: 30, height: "100%" }} automaticallyAdjustKeyboardInsets keyboardShouldPersistTaps={'handled'}>
                     <View style={{ marginTop: 0 }}>
                         <Text style={{ fontSize: 25, fontWeight: "600", textAlign: "center", color: "black" }}>Sign in to your Account</Text>
                     </View>
