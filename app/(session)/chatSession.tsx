@@ -85,7 +85,7 @@ const chatSession = () => {
     const handleSendMessages = async (messageToSend: string) => {
         try {
             sendMessages(messageToSend);
-            socket?.emit("user_message", { chat_id: chatMessages?._id, message: messageToSend, user_id: currentUser?._id })
+            socket?.emit("user_message", { chat_id: chatMessages?._id, message: messageToSend, user_id: currentUser?._id, friend_id: receiver_id })
         } catch (error) {
             console.log(error);
         }
