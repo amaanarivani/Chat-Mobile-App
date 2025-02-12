@@ -1,5 +1,5 @@
-import { ActivityIndicator, Image, KeyboardAvoidingView, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import { ActivityIndicator, Image, Keyboard, KeyboardAvoidingView, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Header from '@/components/Header';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
 import ChatSessionHeader from '@/components/ChatSessionHeader';
@@ -8,6 +8,7 @@ import UserMessage from '@/components/UserMessage';
 import { Feather, FontAwesome6 } from '@expo/vector-icons';
 import { instance } from '@/api/baseUrlConfig';
 import UseAppContext from '@/contextApi/UseContext';
+import { DateTime } from 'luxon';
 
 const chatSession = () => {
     const [receiverUserData, setReceiverUserData] = useState({ _id: '', name: '', email: '' })
@@ -15,8 +16,13 @@ const chatSession = () => {
     const [responseMessage, setResponseMessage] = useState("");
     const [showKeyboardAndroid, setShowKeyboardAndroid] = useState(false);
     const [loading, setLoading] = useState(false);
+    const [layoutY, setLayoutY] = useState(0);
+    const scrollRef = useRef<any>();
+    const shouldScrollDownRef = useRef<any>(false);
     const { setLoggedIn, setCurrentUser, currentUser, setLoadingData, socket } = UseAppContext();
 
+    const { session_id } = useLocalSearchParams<{ session_id: any }>();
+    console.log(session_id, "session_id");
     const { receiver_id } = useLocalSearchParams<{ receiver_id: any }>();
     console.log(receiver_id, "receiver_id");
     const { receiver_name } = useLocalSearchParams<{ receiver_name: any }>();
@@ -34,6 +40,7 @@ const chatSession = () => {
                 socket.emit("join_chat_room", { chat_id: chatMessages?._id, user_id: currentUser?._id })
                 socket.on("live_message", (data: any) => {
                     console.log(data, "live_message");
+                    shouldScrollDownRef.current = true;
                     setChatMessages((prev: any) => {
                         return {
                             ...prev,
@@ -51,13 +58,37 @@ const chatSession = () => {
         }
     }, [socket, chatMessages?._id])
 
+    useEffect(() => {
+        const showAndroid = Keyboard.addListener('keyboardDidShow', () => {
+            // setShowKeyboardAndroid(true)
+            scrollRef.current?.scrollTo({ x: 0, y: layoutY, animated: true })
+        });
+        // const hideAndroid = Keyboard.addListener('keyboardDidHide', () => {
+        //   setShowKeyboardAndroid(false)
+        //   scrollRef.current?.scrollTo({ x: 0, y: layoutY, animated: true })
+        // });
+        const showIOS = Keyboard.addListener('keyboardWillShow', () => {
+            scrollRef.current?.scrollTo({ x: 0, y: layoutY, animated: true })
+        });
+    }, [layoutY])
+
+    useEffect(() => {
+        // console.log(layoutY, "-------scroll------", scrollRef, "-------scroll------");
+
+        if (layoutY && scrollRef.current?.scrollTo && shouldScrollDownRef.current) {
+            scrollRef.current?.scrollTo({ x: 0, y: layoutY, animated: true })
+            shouldScrollDownRef.current = false;
+        }
+    }, [layoutY, scrollRef.current?.scrollTo])
+
 
     const getAllChatMessages = async () => {
         try {
             setLoading(true);
+            shouldScrollDownRef.current = true;
             const res = await instance.post(`/api/get-all-chat-messages`, {
-                user_id: currentUser?._id,
-                client_user_id: receiver_id
+                session_id,
+                currentDate: DateTime.now().toUTC().toISO()
             })
             console.log(res?.data?.result, "chat_messages");
             setChatMessages(res?.data?.result);
@@ -84,6 +115,7 @@ const chatSession = () => {
 
     const handleSendMessages = async (messageToSend: string) => {
         try {
+            shouldScrollDownRef.current = true;
             sendMessages(messageToSend);
             socket?.emit("user_message", { chat_id: chatMessages?._id, message: messageToSend, user_id: currentUser?._id, friend_id: receiver_id })
         } catch (error) {
@@ -91,16 +123,30 @@ const chatSession = () => {
         }
     }
 
+
     return (
         <>
-            <SafeAreaView style={{ height: "100%", backgroundColor: "white" }}>
+            <SafeAreaView style={{ height: "100%", backgroundColor: "#F5F5F5" }}>
                 <ChatSessionHeader title={receiver_name} />
                 <KeyboardAvoidingView
                     style={{ flex: 1 }}
                     behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
                 // keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0} // Adjust as needed
                 >
-                    <ScrollView>
+                    <ScrollView
+                        // onScrollEndDrag={handleScroll}
+                        scrollEventThrottle={16}
+                        style={{
+                            backgroundColor: "#F5F5F5",
+                            flex: 1,
+                            borderTopLeftRadius: 20,
+                            borderTopRightRadius: 20,
+                        }}
+                        automaticallyAdjustKeyboardInsets={Platform.OS == "android" ? true : false}
+                        keyboardShouldPersistTaps={"handled"}
+                        showsVerticalScrollIndicator={false}
+                        ref={scrollRef}
+                    >
                         {loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center", width: "100%", marginTop: "50%" }}>
                             <ActivityIndicator animating={true} color="#279EFF" size='large' />
                         </View> :
@@ -111,12 +157,14 @@ const chatSession = () => {
                                         key={key}
                                         index={index}
                                         message={message}
+                                        setLayout={setLayoutY}
                                     />
                                 ) : (
                                     <ClientMessage
                                         key={key}
                                         index={index}
                                         message={message}
+                                        setLayout={setLayoutY}
                                     />
                                 )
                             })
@@ -124,7 +172,7 @@ const chatSession = () => {
 
                     </ScrollView>
                     <View style={{
-                        flexDirection: "row", width: "100%", backgroundColor: "#ffffff",
+                        flexDirection: "row", width: "100%", backgroundColor: "#F5F5F5",
                         paddingBottom: showKeyboardAndroid ? 50 : 5
                     }}>
                         {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}

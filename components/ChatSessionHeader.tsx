@@ -1,6 +1,6 @@
 import { Image, Platform, Pressable, StyleSheet, Text, TextInput, View } from 'react-native'
 import React from 'react'
-import { Entypo, Feather, Ionicons } from '@expo/vector-icons';
+import { Entypo, Feather, FontAwesome6, Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import UserAccount from './UserAccount';
 
@@ -16,12 +16,15 @@ const ChatSessionHeader = ({ title }: { title: any }) => {
                     </Pressable>
                 </View>
 
-                <View style={{  }}>
+                <View style={{}}>
                     <View style={{ flexDirection: "row" }}>
-                        <Image
+                        <View style={{ marginVertical: "auto", marginStart: 5, backgroundColor: "#ffffff", padding: 5, borderRadius: 100 }}>
+                            <FontAwesome6 name="user-large" size={22} color="black" style={{}} />
+                        </View>
+                        {/* <Image
                             source={require("@/assets/images/avatar.png")}
                             style={{ width: 30, height: 30, borderRadius: 100, marginVertical: "auto" }}
-                        />
+                        /> */}
                         <Text style={{ color: "white", fontSize: 20, marginStart: 5, marginVertical: "auto", fontWeight: "600", textAlign: "center" }}>{title}</Text>
                     </View>
                     <View style={{ flexDirection: "row", marginHorizontal: "auto" }}>

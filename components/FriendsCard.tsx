@@ -4,7 +4,7 @@ import { instance } from '@/api/baseUrlConfig'
 import UseAppContext from '@/contextApi/UseContext';
 import Popup from './Popup';
 import { useRouter } from 'expo-router';
-import { Feather } from '@expo/vector-icons';
+import { Feather, FontAwesome6 } from '@expo/vector-icons';
 
 const FriendsCard = ({ data, setLoading, loading, setError, setMessage }: { data: any, setLoading: any, loading: any, setError: any, setMessage: any }) => {
     const { setLoggedIn, setCurrentUser, currentUser, setLoadingData } = UseAppContext();
@@ -13,7 +13,7 @@ const FriendsCard = ({ data, setLoading, loading, setError, setMessage }: { data
     const router = useRouter();
 
     const showRemoveFriendDialog = () => {
-        Alert.alert('Are you Sure', `Do you want to remove ${data?.name} as friend ?`, [
+        Alert.alert('Are you Sure', `Do you want to remove ${data?.name} as your friend ?`, [
             {
                 text: 'Cancel',
                 onPress: () => console.log('Cancel Pressed'),
@@ -53,10 +53,11 @@ const FriendsCard = ({ data, setLoading, loading, setError, setMessage }: { data
         <>
             <View style={{ backgroundColor: "white", padding: 15, width: "93%", borderBottomWidth: 1, borderBottomColor: "#D9D9D9", marginBottom: 10, borderRadius: 10, marginHorizontal: "auto" }}>
                 <View style={{ flexDirection: "row" }}>
-                    <View style={{}}>
-                        <Image source={require("@/assets/images/avatar.png")} style={{ width: 70, height: 70, borderRadius: 100 }} />
+                    <View style={{ marginTop: 5 }}>
+                        <FontAwesome6 name="user-large" size={60} color="#00000" />
+                        {/* <Image source={require("@/assets/images/avatar.png")} style={{ width: 70, height: 70, borderRadius: 100 }} /> */}
                     </View>
-                    <View style={{ marginStart: 10 }}>
+                    <View style={{ marginStart: 20 }}>
                         <View style={{ marginVertical: "auto" }}>
                             <Text style={{ marginStart: 10, fontSize: 17, fontWeight: "bold" }}>{data.name}</Text>
                             <Text style={{ marginStart: 10, fontSize: 13, marginTop: 5 }}>{data.email}</Text>
@@ -75,7 +76,7 @@ const FriendsCard = ({ data, setLoading, loading, setError, setMessage }: { data
                                 {/* <Feather name="send" size={24} color="white" /> */}
                             </Pressable>
                             <Pressable style={{ backgroundColor: "#279EFF", padding: 10, borderRadius: 10, marginStart: 20 }}
-                                onPress={showRemoveFriendDialog}
+                                onPress={showRemoveFriendDialog} disabled={loading}
                             >
 
                                 <Text style={{ fontSize: 15, color: "white" }}>

@@ -14,15 +14,19 @@ const ChatCard = ({ data }: { data: any }) => {
 
     let receiver_id = data.users.filter((userId: any) => userId !== currentUser?._id)[0] || "";
 
+    console.log(data?._id, "sessionId");
+
+
     return (
         <View style={{ backgroundColor: "white", padding: 15, width: "99%", borderBottomWidth: 1, borderBottomColor: "#D9D9D9" }}>
             <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
                 <View style={{ flexDirection: "row" }}>
                     <View style={{ marginEnd: 10, marginVertical: "auto" }}>
-                        <Image
+                        {/* <Image
                             source={require('@/assets/images/avatar.png')}
                             style={{ width: 40, height: 40 }}
-                        />
+                        /> */}
+                        <FontAwesome6 name="user-large" size={30} color="#00000" />
                     </View>
                     <View style={{ marginStart: 2, marginVertical: "auto" }}>
                         <Text style={{ fontSize: Platform.OS == "android" ? 15 : 17, fontWeight: data?.notSeenCount ? "800" : "500" }}>{data?.receiver?.name}</Text>
