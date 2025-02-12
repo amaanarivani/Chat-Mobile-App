@@ -37,9 +37,7 @@ const home = () => {
                     console.log('2');
                     Notifications.setNotificationHandler({
                         handleNotification: async () => {
-                            // getChatbotSession();
-                            // getActiveChatbotSession();
-                            // getNotSeenNotificationCount({ user_id: state?.userData?._id });
+                            getAllChatSession();
                             return {
                                 shouldShowAlert: true,
                                 shouldPlaySound: true,
