@@ -4,7 +4,7 @@ import UseAppContext, { AppProvider } from '@/contextApi/UseContext';
 import { Entypo } from '@expo/vector-icons';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { useFocusEffect, useRouter } from 'expo-router';
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { BackHandler, Image, ImageBackground, Platform, Pressable, ScrollView, StyleSheet, Text, TextInput, View, ViewStyle } from 'react-native';
 
 function Index(props: any) {
@@ -24,7 +24,7 @@ function Index(props: any) {
             console.log(user?.result?.name, "check user");
             if (user?.result) {
                 setTimeout(() => {
-                router.push('/(session)/home');
+                    router.push('/(session)/home');
                 }, 1000);
             }
             else {
@@ -36,13 +36,13 @@ function Index(props: any) {
             setLoadingsignIn(false);
         }
     }
-    useFocusEffect(() => {
+    useFocusEffect(useCallback(() => {
         // if (!hasFetched.current) {
         //     checkLogin()
         //     hasFetched.current = true;
         // }
         checkLogin()
-    })
+    }, []))
 
     useFocusEffect(() => {
         backHand.current = BackHandler.addEventListener("hardwareBackPress", () => {

@@ -9,14 +9,18 @@ import { Feather, FontAwesome6 } from '@expo/vector-icons';
 import { instance } from '@/api/baseUrlConfig';
 import UseAppContext from '@/contextApi/UseContext';
 import { DateTime } from 'luxon';
+import axios from 'axios';
 
 const chatSession = () => {
     const [receiverUserData, setReceiverUserData] = useState({ _id: '', name: '', email: '' })
-    const [chatMessages, setChatMessages] = useState({ _id: "", chat_messages: [] });
+    const [chatMessages, setChatMessages] = useState<any>([]);
+    const [chatId, setChatId] = useState('');
     const [responseMessage, setResponseMessage] = useState("");
     const [showKeyboardAndroid, setShowKeyboardAndroid] = useState(false);
     const [loading, setLoading] = useState(false);
     const [layoutY, setLayoutY] = useState(0);
+    const [page, setPage] = useState(1);
+    const [hasMore, setHasMore] = useState(false);
     const scrollRef = useRef<any>();
     const shouldScrollDownRef = useRef<any>(false);
     const { setLoggedIn, setCurrentUser, currentUser, setLoadingData, socket } = UseAppContext();
@@ -34,18 +38,16 @@ const chatSession = () => {
 
     useEffect(() => {
         try {
-            console.log("emit socket", socket);
+            // console.log("emit socket", socket);
 
-            if (socket && chatMessages?._id) {
-                socket.emit("join_chat_room", { chat_id: chatMessages?._id, user_id: currentUser?._id })
+            if (socket && chatId) {
+                socket.emit("join_chat_room", { chat_id: chatId, user_id: currentUser?._id })
                 socket.on("live_message", (data: any) => {
                     console.log(data, "live_message");
                     shouldScrollDownRef.current = true;
                     setChatMessages((prev: any) => {
-                        return {
-                            ...prev,
-                            chat_messages: [...prev?.chat_messages, data?.messageDoc]
-                        }
+                        return [...prev, data?.messageDoc]
+
                     })
                 })
             }
@@ -56,7 +58,7 @@ const chatSession = () => {
         return () => {
             socket?.off("live_message")
         }
-    }, [socket, chatMessages?._id])
+    }, [socket, chatId])
 
     useEffect(() => {
         const showAndroid = Keyboard.addListener('keyboardDidShow', () => {
@@ -82,20 +84,38 @@ const chatSession = () => {
     }, [layoutY, scrollRef.current?.scrollTo])
 
 
-    const getAllChatMessages = async () => {
+    const getAllChatMessages = async (pageNum = 1) => {
         try {
-            setLoading(true);
-            shouldScrollDownRef.current = true;
-            const res = await instance.post(`/api/get-all-chat-messages`, {
+            console.log("1---", pageNum, session_id);
+            if (pageNum == 1) {
+                console.log("3");
+                setLoading(true);
+                shouldScrollDownRef.current = true;
+            }
+            console.log("99");
+            const res = await instance.post(`/api/get-all-chat-messages/${pageNum}`, {
                 session_id,
-                currentDate: DateTime.now().toUTC().toISO()
             })
+            console.log("4");
             console.log(res?.data?.result, "chat_messages");
-            setChatMessages(res?.data?.result);
+            setChatId(res?.data?.chat_id);
+            let data = res?.data?.result;
+            if (data && data?.length > 0) {
+                console.log("5");
+                setHasMore(true);
+                setChatMessages((prev: any) => ([...data, ...prev]));
+                setPage(pageNum);
+            }
+            console.log("6");
             setLoading(false);
+            setTimeout(() => {
+                setHasMore(false);
+            }, 1000);
         } catch (error) {
+            console.log("7");
             console.log(error);
             setLoading(false);
+            // setHasMore(false);
         }
     }
 
@@ -117,11 +137,20 @@ const chatSession = () => {
         try {
             shouldScrollDownRef.current = true;
             sendMessages(messageToSend);
-            socket?.emit("user_message", { chat_id: chatMessages?._id, message: messageToSend, user_id: currentUser?._id, friend_id: receiver_id })
+            socket?.emit("user_message", { chat_id: chatId, message: messageToSend, user_id: currentUser?._id, friend_id: receiver_id })
         } catch (error) {
             console.log(error);
         }
     }
+
+    const handleScroll = (event: any) => {
+        const { contentOffset } = event.nativeEvent;
+        if (contentOffset.y <= 0) {
+            setHasMore(true);
+            getAllChatMessages(page + 1);
+            console.log("You're at the top!");
+        }
+    };
 
 
     return (
@@ -134,7 +163,7 @@ const chatSession = () => {
                 // keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0} // Adjust as needed
                 >
                     <ScrollView
-                        // onScrollEndDrag={handleScroll}
+                        onScrollEndDrag={handleScroll}
                         scrollEventThrottle={16}
                         style={{
                             backgroundColor: "#F5F5F5",
@@ -147,10 +176,24 @@ const chatSession = () => {
                         showsVerticalScrollIndicator={false}
                         ref={scrollRef}
                     >
+                        {
+                            hasMore ? <>
+                                <View style={{
+                                    padding: 10,
+                                    backgroundColor: "#E8E8E8",
+                                    borderTopLeftRadius: 20,
+                                    borderTopRightRadius: 20,
+                                }}>
+                                    {/* <Text style={{ fontSize: 20, textAlign: "center" }}>Loading...</Text> */}
+                                    <ActivityIndicator size="small" color="#0000ff" />
+                                </View>
+                            </> : <>
+                            </>
+                        }
                         {loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center", width: "100%", marginTop: "50%" }}>
                             <ActivityIndicator animating={true} color="#279EFF" size='large' />
                         </View> :
-                            chatMessages?.chat_messages?.map((message: any, index: number) => {
+                            chatMessages?.map((message: any, index: number) => {
                                 const key = message?.id || index;
                                 return message.user_id == currentUser?._id ? (
                                     <UserMessage
@@ -158,6 +201,7 @@ const chatSession = () => {
                                         index={index}
                                         message={message}
                                         setLayout={setLayoutY}
+                                        chatMessagesCount={chatMessages.length}
                                     />
                                 ) : (
                                     <ClientMessage
@@ -165,6 +209,7 @@ const chatSession = () => {
                                         index={index}
                                         message={message}
                                         setLayout={setLayoutY}
+                                        chatMessagesCount={chatMessages.length}
                                     />
                                 )
                             })
