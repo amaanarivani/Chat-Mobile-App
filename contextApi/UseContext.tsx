@@ -73,7 +73,7 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
         console.log("in set socket")
         let socket: any = io(`${baseURL}`, { path: "/api/chatapp" });
-        console.log(socket, "connected")
+        // console.log(socket, "connected")
         socket.on("connect", () => {
             console.log(socket.id, "socketid -- aauth context")
             socket.emit("user_online", { socket_id: socket.id, user_id: currentUser?._id })

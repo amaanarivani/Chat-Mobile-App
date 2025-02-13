@@ -3,13 +3,13 @@ import React from 'react'
 import { AntDesign } from '@expo/vector-icons';
 // import { DateTime } from 'luxon';
 
-const UserMessage = ({ message, index, setLayout }: { message: any, index: any, setLayout: any }) => {
-    // console.log(index, "=======index-chatCount==", chatbotMessageCount);
+const UserMessage = ({ message, index, setLayout, chatMessagesCount }: { message: any, index: any, setLayout: any, chatMessagesCount: any }) => {
+    // console.log(index, "=======index-chatCount==", chatMessagesCount);
     return (
         <View key={index} style={{ flex: 1, alignItems: "flex-end" }} onLayout={(e) => {
-            // if (index == chatbotMessageCount - 1) {
+            if (index == chatMessagesCount - 1) {
             setLayout(e.nativeEvent.layout.y)
-            // }
+            }
         }}>
             <View style={{ flexDirection: "row", marginTop: 30, paddingBottom: 10 }}>
                 <View style={{}}>
