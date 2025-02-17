@@ -114,7 +114,7 @@ const userAccount = () => {
                                 </View>
                             </Pressable>
                         </View>
-                        <View style={{ flexDirection: "row", marginTop: 15 }}>
+                        {/* <View style={{ flexDirection: "row", marginTop: 15 }}>
                             <View style={{}}>
                                 <MaterialCommunityIcons name="calendar-clock" size={24} color="black" />
                             </View>
@@ -126,7 +126,7 @@ const userAccount = () => {
                                     <AntDesign name="right" size={20} color="black" />
                                 </View>
                             </View>
-                        </View>
+                        </View> */}
                     </View>
                     {/* About */}
                     <View
@@ -188,7 +188,7 @@ const userAccount = () => {
                             </View>
                             <View style={{ flexDirection: "row", justifyContent: "space-between", width: "100%" }}>
                                 <View style={{ marginStart: 20, marginVertical: "auto" }}>
-                                    <Text style={{ fontSize: 15, fontWeight: "500" }}>About iAriv Chatbot</Text>
+                                    <Text style={{ fontSize: 15, fontWeight: "500" }}>About Convo</Text>
                                 </View>
                                 <View style={{ marginEnd: 10 }}>
                                     <AntDesign name="right" size={20} color="black" />

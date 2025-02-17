@@ -37,6 +37,10 @@ export default function RootLayout() {
           <Stack.Screen name="(session)" options={{ headerShown: false }} />
           <Stack.Screen name="(no-session)" options={{ headerShown: false }} />
           <Stack.Screen name="(no-session)/signin" options={{ headerShown: false }} />
+          <Stack.Screen name="(no-session)/signup" options={{ headerShown: false }} />
+          <Stack.Screen name="(no-session)/verifyEmailCode" options={{ headerShown: false }} />
+          <Stack.Screen name="(no-session)/resetPassword" options={{ headerShown: false }} />
+          <Stack.Screen name="(no-session)/forgotPassword" options={{ headerShown: false }} />
           <Stack.Screen name="(session)/home" options={{ headerShown: false }} />
           <Stack.Screen name="(session)/chatSession" options={{ headerShown: false }} />
           <Stack.Screen name="(session)/addFriend" options={{ headerShown: false }} />

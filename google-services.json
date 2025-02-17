@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "972752839440",
+    "project_id": "convo-app-6d14c",
+    "storage_bucket": "convo-app-6d14c.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972752839440:android:3f2f9788d569aae15f3b95",
+        "android_client_info": {
+          "package_name": "com.amaan786.chatapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBnNNZQSGMLucMg2fnV_Lov1r2pQMcjpRk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
