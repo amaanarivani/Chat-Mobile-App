@@ -91,14 +91,14 @@ const signin = () => {
 
     const handleVerifyEmail = async () => {
         try {
-            const res = await instance.post(`/api/resend-verification-code`, {
-                type: "email_verification",
+            const res = await instance.post(`/api/verify-email-login`, {
+                // type: "email_verification",
                 email: email.trim().toLowerCase()
             })
             setMessage(res?.data?.message);
-            // setTimeout(() => {
-            //     router.navigate({ pathname: "/(no-session)/verifyEmailCode", params: { item: email.trim().toLowerCase() } })
-            // }, 2000);
+            setTimeout(() => {
+                router.navigate({ pathname: "/(no-session)/verifyEmailCode", params: { item: email.trim().toLowerCase() } })
+            }, 2000);
         } catch (error: any) {
             if (error?.response?.data?.message) {
                 console.log(error?.response?.data?.message, "resend verification code error");
@@ -125,7 +125,7 @@ const signin = () => {
                         <View style={{ flexDirection: "row" }}>
                             <Text style={{ fontSize: 16, marginVertical: "auto", color: "white", fontWeight: 600 }}>Don't have an account yet?</Text>
                             <Pressable style={{ backgroundColor: "white", paddingVertical: 10, paddingHorizontal: 20, borderRadius: 25, marginStart: 5 }}
-                            // onPress={() => router.push("/(no-session)/signup")}
+                                onPress={() => router.push("/(no-session)/signup")}
                             >
                                 <Text style={{ color: "black" }}>signup</Text>
                             </Pressable>
@@ -134,7 +134,7 @@ const signin = () => {
                 </View>
                 <View style={{ marginTop: "10%", flexDirection: 'row', justifyContent: 'center' }}>
                     <Ionicons name="chatbubbles-outline" size={60} color="white" />
-                    <Text style={{ fontSize: 60, fontWeight: "800", color: "white", marginStart: 5}}>Convo</Text>
+                    <Text style={{ fontSize: 60, fontWeight: "800", color: "white", marginStart: 5 }}>Convo</Text>
                 </View>
                 {/* <View style={{ width: "90%", backgroundColor: "#D1D1F0", padding: 6, marginHorizontal: "auto", marginTop: 30, borderTopLeftRadius: 20, borderTopRightRadius: 20 }}></View> */}
                 <ScrollView style={{ flex: 1, backgroundColor: "white", padding: 20, borderTopLeftRadius: 20, borderTopRightRadius: 20, marginTop: 30, height: "100%" }} automaticallyAdjustKeyboardInsets keyboardShouldPersistTaps={'handled'}>
@@ -197,7 +197,7 @@ const signin = () => {
                     </View>
                     <View>
                         <Text style={{ marginTop: 25, color: "gray", fontSize: 18, textAlign: "center", fontWeight: "600" }}
-                        // onPress={() => router.push("/(no-session)/forgotPassword")}
+                            onPress={() => router.push("/(no-session)/forgotPassword")}
                         >Forgot your Password?</Text>
                     </View>
                 </ScrollView>

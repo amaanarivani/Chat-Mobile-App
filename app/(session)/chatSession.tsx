@@ -129,7 +129,7 @@ const chatSession = () => {
                 message: messageToSend
             })
             console.log(res?.data?.result, "initiate chat doc");
-            setChatMessages(res?.data?.result)
+            setChatMessages(res?.data?.result?.chat_messages)
         } catch (error) {
             console.log(error);
         }
@@ -196,7 +196,7 @@ const chatSession = () => {
                             {loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center", width: "100%", marginTop: "50%" }}>
                                 <ActivityIndicator animating={true} color="#279EFF" size='large' />
                             </View> :
-                                chatMessages?.map((message: any, index: number) => {
+                                chatMessages.map((message: any, index: number) => {
                                     const key = message?.id || index;
                                     return message.user_id == currentUser?._id ? (
                                         <UserMessage

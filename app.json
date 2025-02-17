@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "chat-app",
-    "slug": "chat-app",
+    "name": "Convo",
+    "slug": "convo-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/images/icon.png",
@@ -16,7 +16,8 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.amaan786.chatapp"
+      "package": "com.amaan786.chatapp",
+      "googleServicesFile": "./google-services.json"
     },
     "web": {
       "bundler": "metro",
@@ -43,7 +44,7 @@
         "origin": false
       },
       "eas": {
-        "projectId": "dd896bf9-99b7-4cc5-90cf-d25a1743e1af"
+        "projectId": "ea9534c4-62e7-4cd6-90e4-ca67fa292ec1"
       }
     }
   }

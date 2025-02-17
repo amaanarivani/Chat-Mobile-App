@@ -96,7 +96,7 @@ const home = () => {
                 }
                 if (finalStatus !== 'granted') return;
 
-                const token = (await Notifications.getExpoPushTokenAsync({ projectId: "dd896bf9-99b7-4cc5-90cf-d25a1743e1af" })).data;
+                const token = (await Notifications.getExpoPushTokenAsync({ projectId: "ea9534c4-62e7-4cd6-90e4-ca67fa292ec1" })).data;
                 console.log(token, "expo-notification-token");
 
                 // setExpoPushToken(token);
