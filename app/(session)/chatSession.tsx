@@ -1,4 +1,4 @@
-import { ActivityIndicator, Image, Keyboard, KeyboardAvoidingView, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { ActivityIndicator, Image, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Header from '@/components/Header';
 import { useFocusEffect, useLocalSearchParams } from 'expo-router';
@@ -66,8 +66,8 @@ const chatSession = () => {
             scrollRef.current?.scrollTo({ x: 0, y: layoutY, animated: true })
         });
         // const hideAndroid = Keyboard.addListener('keyboardDidHide', () => {
-        //   setShowKeyboardAndroid(false)
-        //   scrollRef.current?.scrollTo({ x: 0, y: layoutY, animated: true })
+        //     setShowKeyboardAndroid(false)
+        //     scrollRef.current?.scrollTo({ x: 0, y: layoutY, animated: true })
         // });
         const showIOS = Keyboard.addListener('keyboardWillShow', () => {
             scrollRef.current?.scrollTo({ x: 0, y: layoutY, animated: true })
@@ -93,8 +93,10 @@ const chatSession = () => {
                 shouldScrollDownRef.current = true;
             }
             console.log("99");
+            let date = DateTime.now().toUTC().toISO()
             const res = await instance.post(`/api/get-all-chat-messages/${pageNum}`, {
                 session_id,
+                current_date: date
             })
             console.log("4");
             console.log(res?.data?.result, "chat_messages");
@@ -155,90 +157,92 @@ const chatSession = () => {
 
     return (
         <>
-            <SafeAreaView style={{ height: "100%", backgroundColor: "#F5F5F5" }}>
-                <ChatSessionHeader title={receiver_name} />
-                <KeyboardAvoidingView
-                    style={{ flex: 1 }}
-                    behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
-                // keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0} // Adjust as needed
-                >
-                    <ScrollView
-                        onScrollEndDrag={handleScroll}
-                        scrollEventThrottle={16}
-                        style={{
-                            backgroundColor: "#F5F5F5",
-                            flex: 1,
-                            borderTopLeftRadius: 20,
-                            borderTopRightRadius: 20,
-                        }}
-                        automaticallyAdjustKeyboardInsets={Platform.OS == "android" ? true : false}
-                        keyboardShouldPersistTaps={"handled"}
-                        showsVerticalScrollIndicator={false}
-                        ref={scrollRef}
+            <ImageBackground source={require("@/assets/images/chat-screen.jpg")} style={{ flex: 1, height: "100%" }}>
+                <SafeAreaView style={{ height: "100%", backgroundColor: "" }}>
+                    <ChatSessionHeader title={receiver_name} />
+                    <KeyboardAvoidingView
+                        style={{ flex: 1 }}
+                        behavior={Platform.OS === 'ios' ? 'padding' : 'padding'}
+                    // keyboardVerticalOffset={Platform.OS === 'ios' ? 60 : 0} // Adjust as needed
                     >
-                        {
-                            hasMore ? <>
-                                <View style={{
-                                    padding: 10,
-                                    backgroundColor: "#E8E8E8",
-                                    borderTopLeftRadius: 20,
-                                    borderTopRightRadius: 20,
-                                }}>
-                                    {/* <Text style={{ fontSize: 20, textAlign: "center" }}>Loading...</Text> */}
-                                    <ActivityIndicator size="small" color="#0000ff" />
-                                </View>
-                            </> : <>
-                            </>
-                        }
-                        {loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center", width: "100%", marginTop: "50%" }}>
-                            <ActivityIndicator animating={true} color="#279EFF" size='large' />
-                        </View> :
-                            chatMessages?.map((message: any, index: number) => {
-                                const key = message?.id || index;
-                                return message.user_id == currentUser?._id ? (
-                                    <UserMessage
-                                        key={key}
-                                        index={index}
-                                        message={message}
-                                        setLayout={setLayoutY}
-                                        chatMessagesCount={chatMessages.length}
-                                    />
-                                ) : (
-                                    <ClientMessage
-                                        key={key}
-                                        index={index}
-                                        message={message}
-                                        setLayout={setLayoutY}
-                                        chatMessagesCount={chatMessages.length}
-                                    />
-                                )
-                            })
-                        }
-
-                    </ScrollView>
-                    <View style={{
-                        flexDirection: "row", width: "100%", backgroundColor: "#F5F5F5",
-                        paddingBottom: showKeyboardAndroid ? 50 : 5
-                    }}>
-                        {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-                        <TextInput style={styles.input} placeholder='Type your message' onChangeText={(e) => {
-                            setResponseMessage(e);
-                            // handleTypingStart() 
-                        }} value={responseMessage} />
-                        <Pressable style={{ width: "20%", flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#279EFF", borderRadius: 30, marginHorizontal: "3%" }} onPress={() => {
-                            console.log("send message pressed");
-                            if (responseMessage.trim()) {
-                                handleSendMessages(responseMessage.trim())
+                        <ScrollView
+                            onScrollEndDrag={handleScroll}
+                            scrollEventThrottle={16}
+                            style={{
+                                backgroundColor: "",
+                                flex: 1,
+                                borderTopLeftRadius: 20,
+                                borderTopRightRadius: 20,
+                            }}
+                            automaticallyAdjustKeyboardInsets={Platform.OS == "android" ? true : false}
+                            keyboardShouldPersistTaps={"handled"}
+                            showsVerticalScrollIndicator={false}
+                            ref={scrollRef}
+                        >
+                            {
+                                hasMore ? <>
+                                    <View style={{
+                                        padding: 10,
+                                        backgroundColor: "#E8E8E8",
+                                        borderTopLeftRadius: 20,
+                                        borderTopRightRadius: 20,
+                                    }}>
+                                        {/* <Text style={{ fontSize: 20, textAlign: "center" }}>Loading...</Text> */}
+                                        <ActivityIndicator size="small" color="#0000ff" />
+                                    </View>
+                                </> : <>
+                                </>
                             }
-                            setResponseMessage("");
+                            {loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center", width: "100%", marginTop: "50%" }}>
+                                <ActivityIndicator animating={true} color="#279EFF" size='large' />
+                            </View> :
+                                chatMessages?.map((message: any, index: number) => {
+                                    const key = message?.id || index;
+                                    return message.user_id == currentUser?._id ? (
+                                        <UserMessage
+                                            key={key}
+                                            index={index}
+                                            message={message}
+                                            setLayout={setLayoutY}
+                                            chatMessagesCount={chatMessages.length}
+                                        />
+                                    ) : (
+                                        <ClientMessage
+                                            key={key}
+                                            index={index}
+                                            message={message}
+                                            setLayout={setLayoutY}
+                                            chatMessagesCount={chatMessages.length}
+                                        />
+                                    )
+                                })
+                            }
+
+                        </ScrollView>
+                        <View style={{
+                            flexDirection: "row", width: "100%", backgroundColor: "",
+                            paddingBottom: showKeyboardAndroid ? 50 : 5
                         }}>
-                            <Feather name="send" size={22} color="white" />
-                            {/* <Text style={{color: "white"}}>Send</Text> */}
-                        </Pressable>
-                        {/* </TouchableWithoutFeedback> */}
-                    </View>
-                </KeyboardAvoidingView>
-            </SafeAreaView >
+                            {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
+                            <TextInput style={styles.input} placeholder='Type your message' onChangeText={(e) => {
+                                setResponseMessage(e);
+                                // handleTypingStart() 
+                            }} value={responseMessage} />
+                            <Pressable style={{ width: "20%", flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#279EFF", borderRadius: 30, marginHorizontal: "3%" }} onPress={() => {
+                                console.log("send message pressed");
+                                if (responseMessage.trim()) {
+                                    handleSendMessages(responseMessage.trim())
+                                }
+                                setResponseMessage("");
+                            }}>
+                                <Feather name="send" size={22} color="white" />
+                                {/* <Text style={{color: "white"}}>Send</Text> */}
+                            </Pressable>
+                            {/* </TouchableWithoutFeedback> */}
+                        </View>
+                    </KeyboardAvoidingView>
+                </SafeAreaView >
+            </ImageBackground>
         </>
     )
 }
