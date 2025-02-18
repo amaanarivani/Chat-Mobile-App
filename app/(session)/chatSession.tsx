@@ -130,6 +130,7 @@ const chatSession = () => {
             })
             console.log(res?.data?.result, "initiate chat doc");
             setChatMessages(res?.data?.result?.chat_messages)
+            setChatId(res?.data?.result?._id)
         } catch (error) {
             console.log(error);
         }

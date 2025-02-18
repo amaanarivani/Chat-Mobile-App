@@ -118,7 +118,7 @@ const home = () => {
     const getAllChatSession = async () => {
         console.log(currentUser?._id, "user id to send");
         try {
-            setLoading(true);
+            // setLoading(true);
             let authToken = await AsyncStorage.getItem("token");
             const res = await instance.post(`/api/get-all-chat-session`, {
                 user_id: currentUser?._id
@@ -171,8 +171,8 @@ const home = () => {
                                 //     ) : null
                                 // }
                                 ListEmptyComponent={
-                                    !loading ? <View style={{ flex: 1, justifyContent: "center", alignItems: "center", width: "100%", marginTop: "50%" }}>
-                                        <Text style={{ fontSize: 20 }}>No Chats</Text>
+                                    !loading ? <View style={{ padding: 10 }}>
+                                        <ActivityIndicator size="small" color="#0000ff" />
                                     </View> : <></>
                                 }
                             />
