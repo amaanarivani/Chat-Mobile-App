@@ -1,6 +1,6 @@
-import { ActivityIndicator, FlatList, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
-import React, { useCallback, useState } from 'react'
-import { useFocusEffect, usePathname } from 'expo-router'
+import { ActivityIndicator, BackHandler, FlatList, SafeAreaView, StyleSheet, Text, TextInput, View } from 'react-native'
+import React, { useCallback, useRef, useState } from 'react'
+import { useFocusEffect, usePathname, useRouter } from 'expo-router'
 import Header from '@/components/Header'
 import TabNavigation from '@/components/TabNavigation'
 import UserSuggestionCard from '@/components/UserSuggestionCard'
@@ -18,6 +18,35 @@ const myFriends = () => {
     const pathname = usePathname();
 
     const { setLoggedIn, setCurrentUser, currentUser, setLoadingData } = UseAppContext();
+
+    const router = useRouter();
+        const backHand = useRef<any>();
+        useFocusEffect(useCallback(() => {
+    
+            backHand.current = BackHandler.addEventListener("hardwareBackPress", () => {
+                // BackHandler.exitApp();
+                  router.back();
+                console.log("22");
+                return true;
+            })
+            return () => {
+                console.log("cl");
+    
+                backHand.current = BackHandler.addEventListener("hardwareBackPress", () => {
+    
+                    // try {
+    
+                    //   if(state?.isSignIn){
+    
+                    //     router.navigate("/(session)/home");
+                    //   }
+                    // } catch (error) {
+    
+                    // }
+                    return true
+                })
+            }
+        }, []))
 
     useFocusEffect(useCallback(() => {
         if (currentUser?._id) {

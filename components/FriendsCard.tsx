@@ -36,7 +36,7 @@ const FriendsCard = ({ data, setLoading, loading, setError, setMessage }: { data
             setMessage(res?.data?.message);
             setLoading(false);
             setTimeout(() => {
-                router.navigate('/(session)/addFriend');
+                router.navigate('/(session)/home');
             }, 500);
         } catch (error) {
             console.log(error);

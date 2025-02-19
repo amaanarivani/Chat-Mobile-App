@@ -50,6 +50,7 @@ const signin = () => {
     }, []))
 
     const handleSigin = async () => {
+        Keyboard.dismiss();
         if (!email.trim() || !password.trim()) {
             setError("Email or Password is empty")
             return;

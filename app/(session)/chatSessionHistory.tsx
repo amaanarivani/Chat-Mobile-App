@@ -33,6 +33,7 @@ const chatSession = () => {
     const { receiver_name } = useLocalSearchParams<{ receiver_name: any }>();
     console.log(receiver_name, "receiver_name");
 
+
     const router = useRouter();
     const backHand = useRef<any>();
     useFocusEffect(useCallback(() => {
@@ -258,27 +259,6 @@ const chatSession = () => {
                             }
 
                         </ScrollView>
-                        <View style={{
-                            flexDirection: "row", width: "100%", backgroundColor: "",
-                            paddingBottom: showKeyboardAndroid ? 50 : 5
-                        }}>
-                            {/* <TouchableWithoutFeedback onPress={Keyboard.dismiss}> */}
-                            <TextInput style={styles.input} placeholder='Type your message' onChangeText={(e) => {
-                                setResponseMessage(e);
-                                // handleTypingStart() 
-                            }} value={responseMessage} />
-                            <Pressable style={{ width: "20%", flex: 1, justifyContent: "center", alignItems: "center", backgroundColor: "#279EFF", borderRadius: 30, marginHorizontal: "3%" }} onPress={() => {
-                                console.log("send message pressed");
-                                if (responseMessage.trim()) {
-                                    handleSendMessages(responseMessage.trim())
-                                }
-                                setResponseMessage("");
-                            }}>
-                                <Feather name="send" size={22} color="white" />
-                                {/* <Text style={{color: "white"}}>Send</Text> */}
-                            </Pressable>
-                            {/* </TouchableWithoutFeedback> */}
-                        </View>
                     </KeyboardAvoidingView>
                 </SafeAreaView >
             </ImageBackground>

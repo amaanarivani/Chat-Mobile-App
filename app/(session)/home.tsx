@@ -1,5 +1,5 @@
-import { ActivityIndicator, FlatList, Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
-import React, { useCallback, useEffect, useState } from 'react'
+import { ActivityIndicator, BackHandler, FlatList, Platform, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Header from '@/components/Header';
 import TabNavigation from '@/components/TabNavigation';
 import { useFocusEffect, usePathname, useRouter } from 'expo-router';
@@ -37,7 +37,7 @@ const home = () => {
                     console.log('2');
                     Notifications.setNotificationHandler({
                         handleNotification: async () => {
-                            getAllChatSession();
+                            getAllChatSessionNotification();
                             return {
                                 shouldShowAlert: true,
                                 shouldPlaySound: true,
@@ -113,9 +113,55 @@ const home = () => {
         }
     };
 
+    const backHand = useRef<any>();
+    useFocusEffect(useCallback(() => {
+
+        backHand.current = BackHandler.addEventListener("hardwareBackPress", () => {
+            BackHandler.exitApp();
+            //   router.navigate("/(no-session)/signin")
+            console.log("22");
+            return true;
+        })
+        return () => {
+            console.log("cl");
+
+            backHand.current = BackHandler.addEventListener("hardwareBackPress", () => {
+
+                // try {
+
+                //   if(state?.isSignIn){
+
+                //     router.navigate("/(session)/home");
+                //   }
+                // } catch (error) {
+
+                // }
+                return true
+            })
+        }
+    }, []))
+
 
 
     const getAllChatSession = async () => {
+        console.log(currentUser?._id, "user id to send");
+        try {
+            setLoading(true);
+            let authToken = await AsyncStorage.getItem("token");
+            const res = await instance.post(`/api/get-all-chat-session`, {
+                user_id: currentUser?._id
+            }, { headers: { Authorization: `Bearer ${authToken}` } });
+            // console.log(res?.data?.result, "chat data from server");
+            setChatData(res?.data?.result)
+            setLoading(false);
+        } catch (error) {
+            console.log(error);
+            setLoading(false);
+        }
+    }
+
+
+    const getAllChatSessionNotification = async () => {
         console.log(currentUser?._id, "user id to send");
         try {
             // setLoading(true);
@@ -133,7 +179,11 @@ const home = () => {
     }
 
     const handlePress = async (item: any) => {
-        router.navigate({ pathname: "/(session)/chatSession", params: { receiver_id: item?.receiver?._id, receiver_name: item?.receiver?.name, session_id: item?._id } })
+        if (item?.has_friends) {
+            router.navigate({ pathname: "/(session)/chatSession", params: { receiver_id: item?.receiver?._id, receiver_name: item?.receiver?.name, session_id: item?._id } })
+        } else {
+            router.navigate({ pathname: "/(session)/chatSessionHistory", params: { receiver_id: item?.receiver?._id, receiver_name: item?.receiver?.name, session_id: item?._id } })
+        }
     };
 
     const renderItem = ({ item }: { item: any }) => (
@@ -172,7 +222,7 @@ const home = () => {
                                 // }
                                 ListEmptyComponent={
                                     !loading ? <View style={{ padding: 10 }}>
-                                        <ActivityIndicator size="small" color="#0000ff" />
+                                        <Text style={{fontSize: 20, textAlign: 'center', marginTop: "50%"}}>No Chats Available</Text>
                                     </View> : <></>
                                 }
                             />
