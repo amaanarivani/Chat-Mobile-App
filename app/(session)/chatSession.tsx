@@ -10,6 +10,7 @@ import { instance } from '@/api/baseUrlConfig';
 import UseAppContext from '@/contextApi/UseContext';
 import { DateTime } from 'luxon';
 import axios from 'axios';
+import AnnouncementMessage from '@/components/AnnouncementMessage';
 
 const chatSession = () => {
     const [receiverUserData, setReceiverUserData] = useState({ _id: '', name: '', email: '' })
@@ -199,7 +200,7 @@ const chatSession = () => {
                             </View> :
                                 chatMessages.map((message: any, index: number) => {
                                     const key = message?.id || index;
-                                    return message.user_id == currentUser?._id ? (
+                                    return message.user_id == currentUser?._id && message?.message_type == 15 ? (
                                         <UserMessage
                                             key={key}
                                             index={index}
@@ -207,7 +208,7 @@ const chatSession = () => {
                                             setLayout={setLayoutY}
                                             chatMessagesCount={chatMessages.length}
                                         />
-                                    ) : (
+                                    ) : message.user_id != currentUser?._id && message?.message_type == 15 ? (
                                         <ClientMessage
                                             key={key}
                                             index={index}
@@ -215,7 +216,15 @@ const chatSession = () => {
                                             setLayout={setLayoutY}
                                             chatMessagesCount={chatMessages.length}
                                         />
-                                    )
+                                    ) : message?.message_type == 16 ? (
+                                        <AnnouncementMessage
+                                            key={key}
+                                            index={index}
+                                            message={message}
+                                            setLayout={setLayoutY}
+                                            chatMessagesCount={chatMessages.length}
+                                        />
+                                    ) : <></>
                                 })
                             }
 
