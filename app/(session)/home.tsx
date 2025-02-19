@@ -133,7 +133,11 @@ const home = () => {
     }
 
     const handlePress = async (item: any) => {
-        router.navigate({ pathname: "/(session)/chatSession", params: { receiver_id: item?.receiver?._id, receiver_name: item?.receiver?.name, session_id: item?._id } })
+        if (item?.has_friends) {
+            router.navigate({ pathname: "/(session)/chatSession", params: { receiver_id: item?.receiver?._id, receiver_name: item?.receiver?.name, session_id: item?._id } })
+        } else {
+            router.navigate({ pathname: "/(session)/chatSessionHistory", params: { receiver_id: item?.receiver?._id, receiver_name: item?.receiver?.name, session_id: item?._id } })
+        }
     };
 
     const renderItem = ({ item }: { item: any }) => (

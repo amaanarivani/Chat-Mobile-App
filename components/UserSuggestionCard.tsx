@@ -33,7 +33,7 @@ const UserSuggestionCard = ({ data, setLoading, loading, setError, setMessage }:
             setMessage(res?.data?.message);
             setLoading(false);
             setTimeout(() => {
-                router.navigate("/(session)/myFriends")
+                router.navigate("/(session)/home")
             }, 500);
         } catch (error) {
             console.log(error);

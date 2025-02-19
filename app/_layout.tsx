@@ -43,6 +43,7 @@ export default function RootLayout() {
           <Stack.Screen name="(no-session)/forgotPassword" options={{ headerShown: false }} />
           <Stack.Screen name="(session)/home" options={{ headerShown: false }} />
           <Stack.Screen name="(session)/chatSession" options={{ headerShown: false }} />
+          <Stack.Screen name="(session)/chatSessionHistory" options={{ headerShown: false }} />
           <Stack.Screen name="(session)/addFriend" options={{ headerShown: false }} />
           <Stack.Screen name="(session)/myFriends" options={{ headerShown: false }} />
           <Stack.Screen name="(session)/userAccount" options={{ headerShown: false }} />
