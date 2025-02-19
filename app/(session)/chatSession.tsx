@@ -1,7 +1,7 @@
-import { ActivityIndicator, Image, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { ActivityIndicator, BackHandler, Image, ImageBackground, Keyboard, KeyboardAvoidingView, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import Header from '@/components/Header';
-import { useFocusEffect, useLocalSearchParams } from 'expo-router';
+import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router';
 import ChatSessionHeader from '@/components/ChatSessionHeader';
 import ClientMessage from '@/components/ClientMessage';
 import UserMessage from '@/components/UserMessage';
@@ -32,6 +32,35 @@ const chatSession = () => {
     console.log(receiver_id, "receiver_id");
     const { receiver_name } = useLocalSearchParams<{ receiver_name: any }>();
     console.log(receiver_name, "receiver_name");
+
+    const router = useRouter();
+    const backHand = useRef<any>();
+    useFocusEffect(useCallback(() => {
+
+        backHand.current = BackHandler.addEventListener("hardwareBackPress", () => {
+            // BackHandler.exitApp();
+            router.push("/(session)/home");
+            console.log("22");
+            return true;
+        })
+        return () => {
+            console.log("cl");
+
+            backHand.current = BackHandler.addEventListener("hardwareBackPress", () => {
+
+                // try {
+
+                //   if(state?.isSignIn){
+
+                //     router.navigate("/(session)/home");
+                //   }
+                // } catch (error) {
+
+                // }
+                return true
+            })
+        }
+    }, []))
 
     useFocusEffect(useCallback(() => {
         getAllChatMessages();

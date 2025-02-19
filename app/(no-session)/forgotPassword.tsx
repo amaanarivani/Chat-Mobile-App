@@ -1,4 +1,4 @@
-import { BackHandler, Image, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { BackHandler, Image, Keyboard, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useCallback, useRef, useState } from 'react'
 import { useFocusEffect, useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons';
@@ -43,6 +43,7 @@ const forgotPassword = () => {
 
     const handleCodeForgotPassword = async () => {
         try {
+            Keyboard.dismiss();
             setLoading(true);
             const res = await instance.post(`/api/forget-password-otp`, {
                 email: email.toLowerCase()
