@@ -1,4 +1,4 @@
-import { baseURL } from "@/api/baseUrlConfig";
+import { baseURL, instance } from "@/api/baseUrlConfig";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { useRouter } from "expo-router";
@@ -11,8 +11,10 @@ interface AppContextType {
     setLoggedIn: Dispatch<SetStateAction<boolean>>;
     logout: () => void;
     handleSetSocket: () => void;
+    getAllUserNotificationsCount: () => void;
     currentUser: any; // Replace 'any' with a more specific type if needed
     socket: any;
+    notifCount: any;
     setCurrentUser: Dispatch<SetStateAction<any>>;
     loadingData: boolean;
     setLoadingData: Dispatch<SetStateAction<boolean>>;
@@ -22,6 +24,7 @@ interface AppContextType {
 const AppContext = createContext<AppContextType | null>(null);
 
 export const AppProvider = ({ children }: { children: React.ReactNode }) => {
+    const [notifCount, setNotifCount] = useState<any>(0);
     const [socket, setSocket] = useState<any | null>(null);
     const [currentUser, setCurrentUser] = useState<any | null>(null);
     const [loadingData, setLoadingData] = useState(true);
@@ -32,7 +35,13 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
 
     useEffect(() => {
         handleCurrentUser();
+        // getAllUserNotificationsCount();
     }, []);
+
+    useEffect(() => {
+        // handleCurrentUser();
+        getAllUserNotificationsCount();
+    }, [currentUser?._id]);
 
     const handleCurrentUser = async () => {
         setLoadingData(true);
@@ -99,8 +108,22 @@ export const AppProvider = ({ children }: { children: React.ReactNode }) => {
         // }
     };
 
+    const getAllUserNotificationsCount = async () => {
+        try {
+            console.log("inside notifyCount");
+
+            const res = await instance.post(`/api/get-all-user-notifications-count`, {
+                user_id: currentUser?._id
+            })
+            console.log(res?.data?.notifCount, "notifyCount");
+            setNotifCount(res?.data?.notifCount)
+        } catch (error) {
+
+        }
+    }
+
     return (
-        <AppContext.Provider value={{ loggedIn, setLoggedIn, logout, currentUser, setCurrentUser, loadingData, setLoadingData, handleSetSocket, socket }}>
+        <AppContext.Provider value={{ loggedIn, setLoggedIn, logout, currentUser, setCurrentUser, loadingData, setLoadingData, handleSetSocket, socket, getAllUserNotificationsCount, notifCount }}>
             {children}
         </AppContext.Provider>
     );
