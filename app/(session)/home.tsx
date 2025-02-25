@@ -13,7 +13,7 @@ import * as Notifications from 'expo-notifications';
 const home = () => {
     const [chatData, setChatData] = useState([]);
     const [loading, setLoading] = useState(false);
-    const { setLoggedIn, setCurrentUser, currentUser, setLoadingData, handleSetSocket, socket } = UseAppContext();
+    const { setLoggedIn, setCurrentUser, currentUser, setLoadingData, handleSetSocket, socket, getAllUserNotificationsCount } = UseAppContext();
 
     const pathname = usePathname();
     const router = useRouter();
@@ -38,6 +38,7 @@ const home = () => {
                     Notifications.setNotificationHandler({
                         handleNotification: async () => {
                             getAllChatSessionNotification();
+                            getAllUserNotificationsCount();
                             return {
                                 shouldShowAlert: true,
                                 shouldPlaySound: true,
@@ -222,7 +223,7 @@ const home = () => {
                                 // }
                                 ListEmptyComponent={
                                     !loading ? <View style={{ padding: 10 }}>
-                                        <Text style={{fontSize: 20, textAlign: 'center', marginTop: "50%"}}>No Chats Available</Text>
+                                        <Text style={{ fontSize: 20, textAlign: 'center', marginTop: "50%" }}>No Chats Available</Text>
                                     </View> : <></>
                                 }
                             />

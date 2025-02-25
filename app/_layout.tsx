@@ -47,6 +47,7 @@ export default function RootLayout() {
           <Stack.Screen name="(session)/addFriend" options={{ headerShown: false }} />
           <Stack.Screen name="(session)/myFriends" options={{ headerShown: false }} />
           <Stack.Screen name="(session)/userAccount" options={{ headerShown: false }} />
+          <Stack.Screen name="(session)/notifications" options={{ headerShown: false }} />
         </Stack>
         <StatusBar style="auto" />
       </AppProvider>
