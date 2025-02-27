@@ -32,7 +32,7 @@ export default function RootLayout() {
   return (
     <PaperProvider>
       <AppProvider>
-        <Stack>
+        <Stack screenOptions={{ headerShown: false, gestureEnabled: false }}>
           <Stack.Screen name="index" options={{ headerShown: false }} />
           <Stack.Screen name="(session)" options={{ headerShown: false }} />
           <Stack.Screen name="(no-session)" options={{ headerShown: false }} />

@@ -1,4 +1,4 @@
-import { BackHandler, Image, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { BackHandler, Image, Keyboard, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useCallback, useEffect, useRef, useState } from 'react'
 import { useFocusEffect, useLocalSearchParams, useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons';
@@ -66,6 +66,7 @@ const resetPassword = () => {
     }, []))
 
     const VerifyResetPasswordCode = async () => {
+        Keyboard.dismiss();
         try {
             setIsSubmitting(true);
             const res = await instance.post(`/api/verify-email`, {
@@ -88,6 +89,7 @@ const resetPassword = () => {
     }
 
     const handleResetPassword = async () => {
+        Keyboard.dismiss();
         if (!password.trim() || !cnfPassword.trim()) {
             return setError("All fields are required")
         }

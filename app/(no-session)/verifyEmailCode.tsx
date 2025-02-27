@@ -1,4 +1,4 @@
-import { Image, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
+import { Image, Keyboard, Platform, Pressable, SafeAreaView, ScrollView, StyleSheet, Text, TextInput, View } from 'react-native'
 import React, { useEffect, useRef, useState } from 'react'
 import { useLocalSearchParams, useRouter } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons';
@@ -33,6 +33,7 @@ const verifyEmailCode = () => {
     }, [item])
 
     const handleVerifyEmail = async () => {
+        Keyboard.dismiss();
         try {
             setIsSubmitting(true);
             const res = await instance.post(`/api/verify-email`, {
