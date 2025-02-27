@@ -91,6 +91,7 @@ const signin = () => {
     };
 
     const handleVerifyEmail = async () => {
+        Keyboard.dismiss();
         try {
             const res = await instance.post(`/api/verify-email-login`, {
                 // type: "email_verification",

@@ -42,8 +42,8 @@ const forgotPassword = () => {
     }, []))
 
     const handleCodeForgotPassword = async () => {
+        Keyboard.dismiss();
         try {
-            Keyboard.dismiss();
             setLoading(true);
             const res = await instance.post(`/api/forget-password-otp`, {
                 email: email.toLowerCase()

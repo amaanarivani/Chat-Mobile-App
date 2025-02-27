@@ -236,9 +236,10 @@ const signup = () => {
   };
 
   const handleVerifyEmail = async () => {
+    Keyboard.dismiss();
     try {
       setIsSubmitting(true);
-      const res = await instance.post(`/api//verify-email-code`, {
+      const res = await instance.post(`/api/verify-email-code`, {
         email: email,
         code: codeSignup
       })
